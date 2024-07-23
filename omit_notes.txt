@@ -1,0 +1,22 @@
+Inductive clause : Set :=
+  | Clause : list literal -> clause.
+
+Inductive formula: Set :=
+  | Clause : list clause -> formula.
+
+
+--------------------------------------------------------------------------
+Original
+
+Fixpoint omit (l:list literal) (c:nat) {struct l} : list literal :=
+    match l with
+      | nil => nil
+      | a :: tail => if (eq_nat c 0) then tail else a :: omit tail (c-1)
+    end.
+--------------------------------------------------------------------------
+Want
+
+Fixpoint omit (c: clause) (n:nat) {struct c} : clause :=
+    match c with
+      | Clause  (list) => omit list
+    end.

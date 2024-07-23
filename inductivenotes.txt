@@ -1,0 +1,14 @@
+Inductive even : nat -> Set :=
+| even_0 : even O
+| even_SS : forall n:nat, even n -> even (S (S n)).
+
+
+Inductive clause2 : Set :=
+list literal : clause2.
+
+
+Fixpoint omit (l:list literal) (c:nat) {struct l} : list literal :=
+    match l with
+      | nil => nil
+      | a :: tail => if (eq_nat c 0) then tail else a :: omit tail (c-1)
+    end.
