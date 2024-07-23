@@ -1,0 +1,36 @@
+DIGEST f4945d164294e1a6cec33a65403ee437
+Ftest
+def 9:13 <> power
+R22:24 Coq.Init.Datatypes <> nat ind
+binder 16:16 <> x:1
+R22:24 Coq.Init.Datatypes <> nat ind
+binder 18:18 <> n:2
+R40:42 Coq.Init.Datatypes <> nat ind
+R55:55 test <> n:2 var
+R77:77 Coq.Init.Datatypes <> S constr
+R85:87 Coq.Init.Peano <> ::nat_scope:x_'*'_x not
+R84:84 test <> x:1 var
+R88:92 test <> power:3 def
+R94:94 test <> x:1 var
+R127:131 test <> power def
+not 115:115 <> :::x_'^'_x
+prf 148:153 <> Fermat
+R177:179 Coq.Init.Datatypes <> nat ind
+binder 167:167 <> x:5
+binder 169:169 <> y:6
+binder 171:171 <> z:7
+binder 173:173 <> n:8
+R197:200 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R191:193 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R185:187 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R183:183 test <> :::x_'^'_x not
+R182:182 test <> x:5 var
+R184:184 test <> n:8 var
+R189:189 test <> :::x_'^'_x not
+R188:188 test <> y:6 var
+R190:190 test <> n:8 var
+R195:195 test <> :::x_'^'_x not
+R194:194 test <> z:7 var
+R196:196 test <> n:8 var
+R202:205 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R201:201 test <> n:8 var

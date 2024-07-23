@@ -1,0 +1,6 @@
+Type T(E)
+
+e:T(E)
+
+Coq < Check O.
+0 : nat
