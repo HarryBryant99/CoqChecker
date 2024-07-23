@@ -1,0 +1,41 @@
+formula
+    it looks that nilformula can be omitted because
+    it could be replaced by consformula []   where [] is the empty list
+This is important since  it reduces the number of  cases you  need  to prove
+
+- Formula needs to have nilformula for the other definition contains_clause?
+	Taking nilformula out means contains_clause only matches f with nilformula to give False. So there is no other case?
+
+in  fact 
+defining formula  directly as equal to list(clause) would probably make  life
+    much easier,because you don't have to unpack it all the time
+similarly defining   clause  to be equal to list(literal) would probably make  your life
+   much easier
+
+- Formula and Clause are already lists.
+- Making them just a list loses the inductive definition, becomes a regular definition
+- The definition becomes: Definition formula := list(clause). So lose the conslcause/nilclause constructor that other methods rely on
+
+Inductive list : Type :=
+    | nil : list
+    | cons : A -> list -> list.
+
+unit_literal_in_clause
+     your definition defines  that the clause consists of literal l only
+     so the name should be   is_unit_clause (or some better name)
+            not unit_literal_in_clause      
+
+- Check because it's unused?
+
+eq_dec
+    it might be  good to add that it is about literals
+    eg  lit_eq_dec
+    because  decidability of equality occurs in many different  types
+         (for instance equality between clauses is probably decidable)
+
+- done
+
+subset doesn't need the initially case distinction (the match)  you can simply define it as
+    forall (l : literal)  memlc  l c ->  memlc l c2
+
+- Check because changing this breaks "subset_clause_prop" proof?

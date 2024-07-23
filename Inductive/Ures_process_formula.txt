@@ -1,0 +1,17 @@
+Definition process_formula (f : formula) : formula :=
+  let found_clause := find_single_literal_clause f in
+  let lit := read_literal_from_clause found_clause in
+  let modified_formula := remove_negated_literal lit f in
+  if formula_eqb modified_formula f
+  then f  (* No changes, return the original formula with the single literal clause *)
+  else remcf found_clause modified_formula.
+
+
+Definition process_formula (f : formula) : formula :=
+  let found_clause := find_single_literal_clause f in
+  let lit := read_literal_from_clause found_clause in
+  let modified_formula := remove_negated_literal lit f in
+  let formula_without_duplicates := add_unique_clauses modified_formula empty in
+  if formula_eqb formula_without_duplicates modified_formula
+  then modified_formula
+  else remcf found_clause formula_without_duplicates.

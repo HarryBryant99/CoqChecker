@@ -1,0 +1,75 @@
+(*Soundness*)
+
+(* Model Definition *)
+Definition model := string -> bool.
+
+(* Interpretation of literals *)
+Definition interp_literal (m : model) (l : literal) : bool :=
+  match l with
+  | pos s => m s
+  | neg s => negb (m s)
+  end.
+
+(* Interpretation of clauses *)
+Fixpoint interp_clause (m : model) (c : clause) : bool :=
+  match c with
+  | nilclause => false
+  | consclause l c' => orb (interp_literal m l) (interp_clause m c')
+  end.
+
+(* Interpretation of formulae *)
+Fixpoint interp_formula (m : model) (f : formula) : bool :=
+  match f with
+  | nilformula => true
+  | consformula c f' => andb (interp_clause m c) (interp_formula m f')
+  end.
+
+(* Soundness Lemma *)
+Lemma soundness_resolution : forall (f1 f2 : formula) (res : unitres) (m : model),
+  interp_formula m f1 = true ->
+  interp_formula m f2 = true ->
+  let res_formula := resolution (subsumption f1) (subsumption f2) in
+  let res_formula_read := readf res_formula in
+  readf res = res_formula_read ->
+  interp_formula m (readf res) = true.
+Proof.
+  (* Proof by induction on the resolution *)
+  intros f1 f2 res m Hf1 Hf2 Hres.
+  unfold readf in Hres.
+  (* Base case: subsumption *)
+  destruct (readf (subsumption f1)) eqn:Eq1;
+  destruct (readf (subsumption f2)) eqn:Eq2;
+  inversion Hres; subst.
+  all: simpl; try assumption.
+  (* Recursive case: resolution *)
+  destruct (readf res) eqn:Eq3;
+  inversion Hres; subst;
+  simpl;
+  try (apply andb_true_intro; split);
+  try (apply interp_formula_subsumption; assumption);
+  intros Hconcat;
+  inversion Hconcat; clear Hconcat.
+  - (* Both terms are nilformula *)
+    reflexivity.
+  - (* readf res is nilformula, concat_formulas is consformula *)
+    auto.
+  - (* readf res is consformula, concat_formulas is nilformula *)
+    destruct (readf res) eqn:H_readf;
+    simpl in H2; inversion H2; subst; clear H2;
+    destruct f1, f2; try discriminate;
+    try solve [simpl; apply andb_true_intro; split; reflexivity].
+  - (* Both terms are consformula *)
+    destruct f1 eqn:Eq_f1, f2 eqn:Eq_f2;
+    try solve [simpl in H3; discriminate H3];
+    inversion H3; subst; clear H3;
+    simpl;
+    try apply andb_true_intro; split.
+    rewrite <- Hf2.
+    simpl.
+    split.
+    - intros H.
+      apply andb_true_intro.
+      split; assumption.
+    - intros [H1 H2].
+      assumption.
+Qed.

@@ -1,0 +1,19 @@
+Theorem unit_resolution_soundness : forall (f : formula) (c : clause),
+  readf (subsumption f) = nilformula \/ readf (resolve_two_unitres (subsumption f) (subsumption f)) = nilformula ->
+  logically_entailed f c.
+Proof.
+  intros f c H.
+  destruct H as [H_subsumption | H_resolution].
+  - (* Subsumption Case *)
+    unfold logically_entailed.
+    intros m Hm.
+    (* Since f reduces to nilformula, any clause c is vacuously satisfied by any assignment m *)
+    destruct c.
+    + simpl. apply I. (* Base case: nilclause is always vacuously satisfied *)
+    + simpl in H_subsumption. rewrite <- H_subsumption in Hm. apply Hm.
+  - (* Resolution Case *)
+    (* No action needed for resolution *)
+    unfold logically_entailed.
+    intros m Hm.
+    contradiction.
+Qed.

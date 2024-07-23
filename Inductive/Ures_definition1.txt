@@ -1,0 +1,12 @@
+(* Unit resolution *)
+Inductive unit_resolution (f : formula) (c1 c2 : clause) : Prop :=
+  | Subsumption : forall c2,
+      subclause c1 c2 ->
+      memcf c1 f ->
+      resolve f c2 ->
+      unit_resolution f c1 c2
+  | Resolution : forall l c1' c2',
+      resolve f (inslc l c1') ->
+      resolve f (inslc (opposite l) c2') ->
+      resolve f (ConcClause c1' c2') ->
+      unit_resolution f c1 c2.

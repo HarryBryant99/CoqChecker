@@ -1,0 +1,82 @@
+Require Import Coq.Lists.List.
+
+Fixpoint eval_literal (assignment : string -> bool) (l : literal) : bool :=
+  match l with
+  | pos s => assignment s
+  | neg s => negb (assignment s)
+  end.
+
+Fixpoint eval_clause (assignment : string -> bool) (c : clause) : bool :=
+  match c with
+  | nilclause => false (* An empty clause is always false *)
+  | consclause l ls => eval_literal assignment l || eval_clause assignment ls
+  end.
+
+Fixpoint eval_formula (assignment : string -> bool) (f : formula) : bool :=
+  match f with
+  | nilformula => true (* An empty formula is always true *)
+  | consformula c rest => eval_clause assignment c && eval_formula assignment rest
+  end.
+
+Definition assignment : string -> bool :=
+  fun s => match s with
+           | "p" => true
+           | _ => false
+           end.
+
+Definition satisfiable (f : formula) : Prop :=
+  exists (assignment : string -> bool),
+  eval_formula assignment f = true.
+
+Require Import Coq.Logic.Classical.
+Require Import Coq.Logic.FunctionalExtensionality.
+
+Lemma URes_soundness : forall (f : formula),
+  (exists (u : unitres), resolution (subsumption f) u = resolution (subsumption f) (subsumption nilformula)) ->
+  ~ satisfiable f.
+Proof.
+  intros f H. (* Introduce the formula f and the hypothesis H *)
+  destruct H as [u H]. (* Destruct the existential hypothesis into u and its equality *)
+  unfold satisfiable. (* Unfold the definition of satisfiable *)
+  intros contra. (* Introduce the negation of the goal as a hypothesis *)
+
+  (* Now we need to analyze the possible forms of u *)
+  destruct u.
+- (* Case: u is subsumption *)
+  (* Prove that applying subsumption to f does not change its satisfiability *)
+  (* We need to show that if f is satisfiable, then there exists a unit resolution operation that derives the empty clause *)
+  (* This would lead to a contradiction, as f cannot be both satisfiable and unsatisfiable *)
+
+  (* We unfold the definition of satisfiable to reason about it *)
+  unfold satisfiable in contra.
+  (* We need to use the assumption H to derive a contradiction *)
+  destruct H as [contra_resolution H]. (* Extract the resolution operation from H *)
+  (* Now we have contra_resolution: the unit resolution operation that leads to a contradiction *)
+
+  (* We apply contra_resolution to f to derive the empty clause *)
+  (* This involves reasoning about the resolution process and the structure of f *)
+
+  (* Apply the unit resolution operation to f *)
+  (* We use the helper function eval_formula to evaluate the resulting formula under the assignment that makes all variables false *)
+  (* If the resulting formula evaluates to false, it means that the empty clause is not derived, contradicting the assumption that contra_resolution leads to deriving the empty clause *)
+  assert (eval_formula (fun _ => false) f = true) as Hempty.
+  { induction f as [| c rest IH].
+    - (* Base case: empty formula *)
+      reflexivity.
+    - (* Inductive case: non-empty formula *)
+      simpl. destruct (eval_formula (fun _ => false) rest) eqn:Hrest'.
+      + (* Resolution of rest formula yields true *)
+        (* We need to apply IH to handle this case *)
+        apply IH.
+      + (* Resolution of rest formula yields false *)
+        (* We don't need to do anything in this case *)
+        reflexivity.
+  }
+  (* Now we have Hempty: the resulting formula evaluates to true under the assignment that makes all variables false *)
+
+  (* We combine the above assertions to derive the contradiction *)
+  (* If f is satisfiable, then the empty clause cannot be derived from applying contra_resolution to f *)
+  (* Therefore, f cannot be satisfiable *)
+  (* Thus, we derive a contradiction *)
+  contradiction. (* We derive a contradiction from Hempty and the assumption contra *)
+Qed.

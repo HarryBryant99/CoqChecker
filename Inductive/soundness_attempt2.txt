@@ -1,0 +1,97 @@
+(* Placeholder for the derive_clause operation *)
+Parameter derive_clause : formula -> clause -> Prop.
+
+(* Define the satisfies_clause predicate *)
+Fixpoint satisfies_clause (assignment : string -> bool) (c : clause) : Prop :=
+  match c with
+  | nilclause => False (* Base case: an empty clause is never satisfied *)
+  | consclause l rest => (match l with
+                          | pos s => assignment s = true
+                          | neg s => assignment s = false
+                          end) \/ satisfies_clause assignment rest
+  end.
+
+(* Define the satisfies_formula predicate *)
+Fixpoint satisfies_formula (assignment : string -> bool) (f : formula) : Prop :=
+  match f with
+  | nilformula => True (* Base case: an empty formula is vacuously satisfied *)
+  | consformula c rest => satisfies_clause assignment c /\ satisfies_formula assignment rest
+  end.
+
+(* Define the relation of logical entailment *)
+Definition logically_entailed (f : formula) (c : clause) : Prop :=
+  forall assignment,
+    satisfies_formula assignment f -> satisfies_clause assignment c.
+
+(* Define your resolution-based theorem prover and its properties *)
+
+(* Define soundness property *)
+Definition soundness := forall formula clause,
+  derive_clause formula clause -> logically_entailed formula clause.
+
+(* Define completeness property *)
+Definition completeness := forall formula clause,
+  logically_entailed formula clause -> derive_clause formula clause.
+
+(* Define the empty_clause *)
+Definition empty_clause : clause := nilclause.
+
+(* Main theorem *)
+Lemma derive_clause_entails_formula :
+  forall f c,
+  derive_clause f c ->
+  logically_entailed f c.
+Admitted. (* This lemma needs to be filled in with a proof. *)
+
+
+Lemma empty_clause_no_assignment :
+  forall (f : formula),
+  (forall assignment, ~ satisfies_formula assignment f) ->
+  derive_clause f empty_clause ->
+  False.
+Proof.
+  intros f No_assignment Derivation.
+  (* We know that there is no assignment that satisfies f *)
+  specialize (No_assignment (fun _ => false)).
+  (* We obtain a contradiction by showing that f is satisfied by the function that always returns false *)
+  apply No_assignment.
+  (* Proof that f is satisfied by the function that always returns false *)
+  unfold satisfies_formula.
+  induction f; simpl; split; auto.
+Qed.
+
+
+
+
+
+
+
+
+Theorem empty_clause_no_assignment :
+  soundness -> completeness ->
+  forall (f : formula),
+  (forall assignment, ~ satisfies_formula assignment f) ->
+  derive_clause f empty_clause ->
+  False.
+Proof.
+  intros Soundness Completeness f No_assignment Derivation.
+  pose proof (Completeness f empty_clause (derive_clause_entails_formula f empty_clause Derivation)) as Completeness_Derivation.
+  pose proof (Soundness f empty_clause Completeness_Derivation) as EmptyClause_entailed_by_formula.
+  unfold logically_entailed in EmptyClause_entailed_by_formula.
+  specialize (No_assignment (fun _ => false)).
+
+assert (Eq_f: f = (f : formula)).
+{ reflexivity. }
+(* We construct a satisfying assignment for f by applying the EmptyClause_entailed_by_formula lemma *)
+assert (Sat_assignment: satisfies_formula (fun _ => false) f).
+{
+  apply EmptyClause_entailed_by_formula.
+  intros c H. simpl. contradiction.
+}
+
+
+
+
+  (* Now, we have a satisfying assignment, which contradicts the No_assignment hypothesis *)
+  contradiction (No_assignment (fun _ => false)).
+Qed.

@@ -1,0 +1,450 @@
+DIGEST 471d5690534dcf691d0ea9d041459109
+FInductive.CNFOp
+R15:18 Coq.Bool.Bool <> <> lib
+R36:41 Coq.Strings.String <> <> lib
+ind 80:86 <> literal
+constr 102:104 <> pos
+constr 130:132 <> neg
+R114:117 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R108:113 Coq.Strings.String <> string ind
+R118:124 Inductive.CNFOp <> literal:1 ind
+R142:145 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R136:141 Coq.Strings.String <> string ind
+R146:152 Inductive.CNFOp <> literal:1 ind
+ind 166:171 <> clause
+constr 187:195 <> nilclause
+constr 210:219 <> consclause
+R199:204 Inductive.CNFOp <> clause:3 ind
+R230:233 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R223:229 Inductive.CNFOp <> literal ind
+R240:243 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R234:239 Inductive.CNFOp <> clause:3 ind
+R244:249 Inductive.CNFOp <> clause:3 ind
+R266:275 Inductive.CNFOp <> consclause constr
+not 258:258 <> ::clause_scope:x_'::'_x
+ind 364:370 <> formula
+constr 384:393 <> nilformula
+constr 407:417 <> consformula
+R397:403 Inductive.CNFOp <> formula:5 ind
+R427:430 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R421:426 Inductive.CNFOp <> clause ind
+R438:441 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R431:437 Inductive.CNFOp <> formula:5 ind
+R442:448 Inductive.CNFOp <> formula:5 ind
+R465:475 Inductive.CNFOp <> consformula constr
+not 457:457 <> ::formula_scope:x_'::'_x
+def 637:646 <> string_dec
+R657:662 Coq.Strings.String <> string ind
+binder 649:650 <> s1:7
+binder 652:653 <> s2:8
+R667:670 Coq.Init.Datatypes <> bool ind
+R680:689 Coq.Strings.String <> string_dec def
+R691:692 Inductive.CNFOp <> s1:7 var
+R694:695 Inductive.CNFOp <> s2:8 var
+R712:716 Coq.Init.Datatypes <> false constr
+R702:705 Coq.Init.Datatypes <> true constr
+def 776:784 <> string_lt
+R795:800 Coq.Strings.String <> string ind
+binder 787:788 <> s1:9
+binder 790:791 <> s2:10
+R805:808 Coq.Init.Datatypes <> bool ind
+R818:827 Inductive.CNFOp <> string_dec def
+R829:830 Inductive.CNFOp <> s1:9 var
+R832:833 Inductive.CNFOp <> s2:10 var
+R851:854 Coq.Init.Datatypes <> true constr
+R840:844 Coq.Init.Datatypes <> false constr
+def 927:927 <> v
+R934:940 Inductive.CNFOp <> literal ind
+binder 930:930 <> l:11
+R945:950 Coq.Strings.String <> string ind
+R963:963 Inductive.CNFOp <> l:11 var
+R974:976 Inductive.CNFOp <> pos constr
+R989:991 Inductive.CNFOp <> neg constr
+def 1075:1087 <> clause_length
+R1094:1099 Inductive.CNFOp <> clause ind
+binder 1090:1090 <> c:13
+R1104:1106 Coq.Init.Datatypes <> nat ind
+R1119:1119 Inductive.CNFOp <> c:13 var
+R1130:1138 Inductive.CNFOp <> nilclause constr
+R1149:1158 Inductive.CNFOp <> consclause constr
+R1168:1168 Coq.Init.Datatypes <> S constr
+R1171:1183 Inductive.CNFOp <> clause_length:14 def
+def 1206:1211 <> Inslll
+R1218:1224 Inductive.CNFOp <> literal ind
+binder 1214:1214 <> l:16
+R1234:1239 Inductive.CNFOp <> clause ind
+binder 1228:1230 <> cls:17
+R1244:1249 Inductive.CNFOp <> clause ind
+R1262:1264 Inductive.CNFOp <> cls:17 var
+R1275:1283 Inductive.CNFOp <> nilclause constr
+R1289:1292 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R1288:1288 Inductive.CNFOp <> l:16 var
+R1293:1301 Inductive.CNFOp <> nilclause constr
+R1307:1316 Inductive.CNFOp <> consclause constr
+R1319:1321 Inductive.CNFOp <> pos constr
+R1342:1344 Coq.Init.Datatypes <> orb def
+R1369:1377 Inductive.CNFOp <> string_lt def
+R1380:1380 Inductive.CNFOp <> v def
+R1382:1382 Inductive.CNFOp <> l:16 var
+R1347:1356 Inductive.CNFOp <> string_dec def
+R1359:1359 Inductive.CNFOp <> v def
+R1361:1361 Inductive.CNFOp <> l:16 var
+R1430:1433 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R1424:1426 Inductive.CNFOp <> pos constr
+R1434:1439 Inductive.CNFOp <> Inslll:18 def
+R1442:1444 Inductive.CNFOp <> pos constr
+R1447:1447 Inductive.CNFOp <> v def
+R1449:1449 Inductive.CNFOp <> l:16 var
+R1401:1404 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R1400:1400 Inductive.CNFOp <> l:16 var
+R1405:1407 Inductive.CNFOp <> cls:17 var
+R1462:1471 Inductive.CNFOp <> consclause constr
+R1474:1476 Inductive.CNFOp <> neg constr
+R1503:1506 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R1494:1496 Inductive.CNFOp <> pos constr
+R1499:1499 Inductive.CNFOp <> v def
+R1501:1501 Inductive.CNFOp <> l:16 var
+R1513:1516 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R1507:1509 Inductive.CNFOp <> neg constr
+def 1561:1574 <> example_clause
+R1578:1583 Inductive.CNFOp <> clause ind
+R1601:1604 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R1590:1592 Inductive.CNFOp <> pos constr
+R1617:1620 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R1605:1607 Inductive.CNFOp <> pos constr
+R1633:1636 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R1621:1623 Inductive.CNFOp <> neg constr
+R1637:1645 Inductive.CNFOp <> nilclause constr
+def 1660:1670 <> test_inslll
+R1674:1679 Inductive.CNFOp <> clause ind
+R1686:1691 Inductive.CNFOp <> Inslll def
+R1694:1696 Inductive.CNFOp <> pos constr
+R1707:1720 Inductive.CNFOp <> example_clause def
+R1732:1742 Inductive.CNFOp <> test_inslll def
+def 1854:1858 <> inslc
+R1865:1871 Inductive.CNFOp <> literal ind
+binder 1861:1861 <> l:20
+R1880:1885 Inductive.CNFOp <> clause ind
+binder 1875:1876 <> ls:21
+R1890:1895 Inductive.CNFOp <> clause ind
+R1908:1909 Inductive.CNFOp <> ls:21 var
+R1920:1928 Inductive.CNFOp <> nilclause constr
+R1934:1937 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R1933:1933 Inductive.CNFOp <> l:20 var
+R1938:1946 Inductive.CNFOp <> nilclause constr
+R1952:1961 Inductive.CNFOp <> consclause constr
+R1973:1982 Inductive.CNFOp <> consclause constr
+R1988:1992 Inductive.CNFOp <> inslc:22 def
+R1994:1994 Inductive.CNFOp <> l:20 var
+prf 2048:2069 <> inslc_computation_rule
+binder 2080:2080 <> l:24
+R2102:2104 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2085:2089 Inductive.CNFOp <> inslc def
+R2091:2091 Inductive.CNFOp <> l:24 var
+R2093:2101 Inductive.CNFOp <> nilclause constr
+R2106:2109 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R2105:2105 Inductive.CNFOp <> l:24 var
+R2110:2118 Inductive.CNFOp <> nilclause constr
+def 2260:2266 <> conclll
+R2277:2280 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2270:2276 Inductive.CNFOp <> literal ind
+R2287:2290 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R2281:2286 Inductive.CNFOp <> clause ind
+R2291:2296 Inductive.CNFOp <> clause ind
+binder 2305:2305 <> l:25
+binder 2307:2308 <> ls:26
+R2313:2322 Inductive.CNFOp <> consclause constr
+R2324:2324 Inductive.CNFOp <> l:25 var
+R2326:2327 Inductive.CNFOp <> ls:26 var
+prf 2372:2395 <> conclll_computation_rule
+binder 2406:2406 <> l:27
+binder 2408:2409 <> ls:28
+R2426:2428 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2414:2420 Inductive.CNFOp <> conclll def
+R2422:2422 Inductive.CNFOp <> l:27 var
+R2424:2425 Inductive.CNFOp <> ls:28 var
+R2429:2438 Inductive.CNFOp <> consclause constr
+R2440:2440 Inductive.CNFOp <> l:27 var
+R2442:2443 Inductive.CNFOp <> ls:28 var
+def 2530:2535 <> conccf
+R2542:2548 Inductive.CNFOp <> literal ind
+binder 2538:2538 <> l:29
+R2556:2561 Inductive.CNFOp <> clause ind
+binder 2552:2552 <> f:30
+R2566:2571 Inductive.CNFOp <> clause ind
+R2584:2584 Inductive.CNFOp <> f:30 var
+R2595:2603 Inductive.CNFOp <> nilclause constr
+R2609:2612 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R2608:2608 Inductive.CNFOp <> l:29 var
+R2613:2621 Inductive.CNFOp <> nilclause constr
+R2627:2636 Inductive.CNFOp <> consclause constr
+R2654:2663 Inductive.CNFOp <> string_dec def
+R2666:2666 Inductive.CNFOp <> v def
+R2668:2668 Inductive.CNFOp <> l:29 var
+R2672:2672 Inductive.CNFOp <> v def
+R2706:2715 Inductive.CNFOp <> consclause constr
+R2721:2726 Inductive.CNFOp <> conccf:31 def
+R2728:2728 Inductive.CNFOp <> l:29 var
+R2689:2689 Inductive.CNFOp <> f:30 var
+prf 2782:2804 <> conccf_computation_rule
+binder 2815:2815 <> l:33
+binder 2817:2817 <> f:34
+R2832:2834 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2822:2827 Inductive.CNFOp <> conccf def
+R2829:2829 Inductive.CNFOp <> l:33 var
+R2831:2831 Inductive.CNFOp <> f:34 var
+R2841:2841 Inductive.CNFOp <> f:34 var
+R2865:2873 Inductive.CNFOp <> nilclause constr
+R2879:2882 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R2878:2878 Inductive.CNFOp <> l:33 var
+R2883:2891 Inductive.CNFOp <> nilclause constr
+R2910:2919 Inductive.CNFOp <> consclause constr
+R2950:2959 Inductive.CNFOp <> string_dec def
+R2962:2962 Inductive.CNFOp <> v def
+R2964:2964 Inductive.CNFOp <> l:33 var
+R2968:2968 Inductive.CNFOp <> v def
+R3041:3050 Inductive.CNFOp <> consclause constr
+R3056:3061 Inductive.CNFOp <> conccf def
+R3063:3063 Inductive.CNFOp <> l:33 var
+R2998:2998 Inductive.CNFOp <> f:34 var
+R3174:3183 Inductive.CNFOp <> string_dec def
+R3186:3186 Inductive.CNFOp <> v def
+R3192:3192 Inductive.CNFOp <> v def
+R3174:3183 Inductive.CNFOp <> string_dec def
+R3186:3186 Inductive.CNFOp <> v def
+R3192:3192 Inductive.CNFOp <> v def
+def 3297:3301 <> remlc
+R3308:3314 Inductive.CNFOp <> literal ind
+binder 3304:3304 <> l:36
+R3322:3327 Inductive.CNFOp <> clause ind
+binder 3318:3318 <> f:37
+R3332:3337 Inductive.CNFOp <> clause ind
+R3350:3350 Inductive.CNFOp <> f:37 var
+R3361:3369 Inductive.CNFOp <> nilclause constr
+R3374:3382 Inductive.CNFOp <> nilclause constr
+R3388:3397 Inductive.CNFOp <> consclause constr
+R3415:3424 Inductive.CNFOp <> string_dec def
+R3427:3427 Inductive.CNFOp <> v def
+R3429:3429 Inductive.CNFOp <> l:36 var
+R3433:3433 Inductive.CNFOp <> v def
+R3468:3477 Inductive.CNFOp <> consclause constr
+R3483:3487 Inductive.CNFOp <> remlc:38 def
+R3489:3489 Inductive.CNFOp <> l:36 var
+prf 3577:3587 <> remlc_empty
+binder 3598:3598 <> l:40
+R3620:3622 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3603:3607 Inductive.CNFOp <> remlc def
+R3609:3609 Inductive.CNFOp <> l:40 var
+R3611:3619 Inductive.CNFOp <> nilclause constr
+R3623:3631 Inductive.CNFOp <> nilclause constr
+prf 3713:3734 <> remlc_computation_rule
+binder 3745:3745 <> l:41
+binder 3747:3748 <> l':42
+binder 3750:3751 <> ls:43
+R3782:3786 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3756:3760 Inductive.CNFOp <> remlc def
+R3762:3762 Inductive.CNFOp <> l:41 var
+R3765:3774 Inductive.CNFOp <> consclause constr
+R3776:3777 Inductive.CNFOp <> l':42 var
+R3779:3780 Inductive.CNFOp <> ls:43 var
+R3790:3799 Inductive.CNFOp <> string_dec def
+R3802:3802 Inductive.CNFOp <> v def
+R3804:3804 Inductive.CNFOp <> l:41 var
+R3808:3808 Inductive.CNFOp <> v def
+R3810:3811 Inductive.CNFOp <> l':42 var
+R3837:3846 Inductive.CNFOp <> consclause constr
+R3848:3849 Inductive.CNFOp <> l':42 var
+R3852:3856 Inductive.CNFOp <> remlc def
+R3858:3858 Inductive.CNFOp <> l:41 var
+R3860:3861 Inductive.CNFOp <> ls:43 var
+R3823:3824 Inductive.CNFOp <> ls:43 var
+R3911:3920 Inductive.CNFOp <> string_dec def
+R3923:3923 Inductive.CNFOp <> v def
+R3929:3929 Inductive.CNFOp <> v def
+R3911:3920 Inductive.CNFOp <> string_dec def
+R3923:3923 Inductive.CNFOp <> v def
+R3929:3929 Inductive.CNFOp <> v def
+def 4005:4015 <> test_clause
+R4019:4024 Inductive.CNFOp <> clause ind
+R4042:4045 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R4031:4033 Inductive.CNFOp <> pos constr
+R4058:4061 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R4046:4048 Inductive.CNFOp <> pos constr
+R4074:4077 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R4062:4064 Inductive.CNFOp <> neg constr
+R4078:4086 Inductive.CNFOp <> nilclause constr
+def 4130:4139 <> test_remlc
+R4143:4148 Inductive.CNFOp <> clause ind
+R4155:4159 Inductive.CNFOp <> remlc def
+R4162:4164 Inductive.CNFOp <> pos constr
+R4176:4186 Inductive.CNFOp <> test_inslll def
+R4220:4230 Inductive.CNFOp <> test_inslll def
+R4328:4337 Inductive.CNFOp <> test_remlc def
+def 4452:4465 <> concat_clauses
+R4476:4481 Inductive.CNFOp <> clause ind
+binder 4468:4469 <> c1:44
+binder 4471:4472 <> c2:45
+R4486:4491 Inductive.CNFOp <> clause ind
+R4504:4505 Inductive.CNFOp <> c1:44 var
+R4516:4524 Inductive.CNFOp <> nilclause constr
+R4529:4530 Inductive.CNFOp <> c2:45 var
+R4536:4545 Inductive.CNFOp <> consclause constr
+R4555:4564 Inductive.CNFOp <> consclause constr
+R4569:4582 Inductive.CNFOp <> concat_clauses:46 def
+R4587:4588 Inductive.CNFOp <> c2:45 var
+def 4630:4644 <> example_clause1
+R4648:4653 Inductive.CNFOp <> clause ind
+R4671:4674 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R4660:4662 Inductive.CNFOp <> pos constr
+R4687:4690 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R4675:4677 Inductive.CNFOp <> pos constr
+R4691:4699 Inductive.CNFOp <> nilclause constr
+def 4714:4728 <> example_clause2
+R4732:4737 Inductive.CNFOp <> clause ind
+R4756:4759 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R4744:4746 Inductive.CNFOp <> neg constr
+R4760:4768 Inductive.CNFOp <> nilclause constr
+def 4783:4801 <> concatenated_clause
+R4805:4810 Inductive.CNFOp <> clause ind
+R4817:4830 Inductive.CNFOp <> concat_clauses def
+R4832:4846 Inductive.CNFOp <> example_clause1 def
+R4848:4862 Inductive.CNFOp <> example_clause2 def
+R4874:4892 Inductive.CNFOp <> concatenated_clause def
+def 4965:4975 <> NonEmptycla
+R4982:4987 Inductive.CNFOp <> clause ind
+binder 4978:4978 <> c:48
+R4992:4995 Coq.Init.Datatypes <> bool ind
+R5008:5008 Inductive.CNFOp <> c:48 var
+R5019:5027 Inductive.CNFOp <> nilclause constr
+R5032:5036 Coq.Init.Datatypes <> false constr
+R5042:5051 Inductive.CNFOp <> consclause constr
+R5060:5063 Coq.Init.Datatypes <> true constr
+def 5149:5162 <> NoEmptyFormula
+R5169:5175 Inductive.CNFOp <> formula ind
+binder 5165:5165 <> f:50
+R5180:5183 Coq.Init.Datatypes <> bool ind
+R5196:5196 Inductive.CNFOp <> f:50 var
+R5207:5216 Inductive.CNFOp <> nilformula constr
+R5221:5224 Coq.Init.Datatypes <> true constr
+R5230:5240 Inductive.CNFOp <> consformula constr
+R5255:5265 Inductive.CNFOp <> NonEmptycla def
+R5299:5303 Coq.Init.Datatypes <> false constr
+R5274:5287 Inductive.CNFOp <> NoEmptyFormula:51 def
+def 5370:5372 <> ec1
+R5376:5381 Inductive.CNFOp <> clause ind
+R5399:5402 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R5388:5390 Inductive.CNFOp <> pos constr
+R5415:5418 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R5403:5405 Inductive.CNFOp <> pos constr
+R5419:5427 Inductive.CNFOp <> nilclause constr
+def 5442:5444 <> ec2
+R5448:5453 Inductive.CNFOp <> clause ind
+R5472:5475 Inductive.CNFOp <> ::clause_scope:x_'::'_x not
+R5460:5462 Inductive.CNFOp <> neg constr
+R5476:5484 Inductive.CNFOp <> nilclause constr
+def 5526:5540 <> example_formula
+R5544:5550 Inductive.CNFOp <> formula ind
+R5560:5563 Inductive.CNFOp <> ::formula_scope:x_'::'_x not
+R5557:5559 Inductive.CNFOp <> ec1 def
+R5567:5570 Inductive.CNFOp <> ::formula_scope:x_'::'_x not
+R5564:5566 Inductive.CNFOp <> ec2 def
+R5571:5580 Inductive.CNFOp <> nilformula constr
+R5592:5602 Inductive.CNFOp <> NonEmptycla def
+R5604:5606 Inductive.CNFOp <> ec1 def
+R5638:5648 Inductive.CNFOp <> NonEmptycla def
+R5650:5658 Inductive.CNFOp <> nilclause constr
+R5699:5712 Inductive.CNFOp <> NoEmptyFormula def
+R5714:5728 Inductive.CNFOp <> example_formula def
+R5760:5773 Inductive.CNFOp <> NoEmptyFormula def
+R5779:5782 Inductive.CNFOp <> ::formula_scope:x_'::'_x not
+R5776:5778 Inductive.CNFOp <> ec1 def
+R5786:5789 Inductive.CNFOp <> ::formula_scope:x_'::'_x not
+R5783:5785 Inductive.CNFOp <> ec2 def
+R5790:5799 Inductive.CNFOp <> nilformula constr
+def 5886:5895 <> string_beq
+R5906:5911 Coq.Strings.String <> string ind
+binder 5898:5899 <> s1:53
+binder 5901:5902 <> s2:54
+R5916:5919 Coq.Init.Datatypes <> bool ind
+R5929:5938 Inductive.CNFOp <> string_dec def
+R5940:5941 Inductive.CNFOp <> s1:53 var
+R5943:5944 Inductive.CNFOp <> s2:54 var
+R5961:5965 Coq.Init.Datatypes <> false constr
+R5951:5954 Coq.Init.Datatypes <> true constr
+def 6030:6040 <> literal_eqb
+R6051:6057 Inductive.CNFOp <> literal ind
+binder 6043:6044 <> l1:55
+binder 6046:6047 <> l2:56
+R6062:6065 Coq.Init.Datatypes <> bool ind
+R6078:6078 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6081:6082 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6085:6085 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6079:6080 Inductive.CNFOp <> l1:55 var
+R6083:6084 Inductive.CNFOp <> l2:56 var
+R6096:6096 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6103:6104 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6111:6111 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6097:6099 Inductive.CNFOp <> pos constr
+R6105:6107 Inductive.CNFOp <> pos constr
+R6115:6115 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6122:6123 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6130:6130 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6116:6118 Inductive.CNFOp <> neg constr
+R6124:6126 Inductive.CNFOp <> neg constr
+R6135:6144 Inductive.CNFOp <> string_beq def
+R6135:6144 Inductive.CNFOp <> string_beq def
+R6156:6156 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6158:6159 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6161:6161 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6166:6170 Coq.Init.Datatypes <> false constr
+def 6238:6247 <> clause_eqb
+R6258:6263 Inductive.CNFOp <> clause ind
+binder 6250:6251 <> c1:57
+binder 6253:6254 <> c2:58
+R6268:6271 Coq.Init.Datatypes <> bool ind
+R6284:6284 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6287:6288 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6291:6291 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6285:6286 Inductive.CNFOp <> c1:57 var
+R6289:6290 Inductive.CNFOp <> c2:58 var
+R6302:6302 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6312:6313 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6323:6323 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6303:6311 Inductive.CNFOp <> nilclause constr
+R6314:6322 Inductive.CNFOp <> nilclause constr
+R6328:6331 Coq.Init.Datatypes <> true constr
+R6337:6337 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6355:6356 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6374:6374 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6338:6347 Inductive.CNFOp <> consclause constr
+R6357:6366 Inductive.CNFOp <> consclause constr
+R6386:6396 Inductive.CNFOp <> literal_eqb def
+R6433:6437 Coq.Init.Datatypes <> false constr
+R6409:6418 Inductive.CNFOp <> clause_eqb:59 def
+R6443:6443 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6445:6446 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6448:6448 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6453:6457 Coq.Init.Datatypes <> false constr
+def 6513:6517 <> remcf
+R6524:6529 Inductive.CNFOp <> clause ind
+binder 6520:6520 <> c:60
+R6537:6543 Inductive.CNFOp <> formula ind
+binder 6533:6533 <> f:61
+R6548:6554 Inductive.CNFOp <> formula ind
+R6567:6567 Inductive.CNFOp <> f:61 var
+R6578:6587 Inductive.CNFOp <> nilformula constr
+R6592:6601 Inductive.CNFOp <> nilformula constr
+R6607:6617 Inductive.CNFOp <> consformula constr
+R6637:6646 Inductive.CNFOp <> clause_eqb def
+R6648:6648 Inductive.CNFOp <> c:60 var
+R6676:6686 Inductive.CNFOp <> consformula constr
+R6692:6696 Inductive.CNFOp <> remcf:62 def
+R6698:6698 Inductive.CNFOp <> c:60 var
+R6658:6662 Inductive.CNFOp <> remcf:62 def
+R6664:6664 Inductive.CNFOp <> c:60 var
+def 6745:6754 <> test_remcf
+R6758:6764 Inductive.CNFOp <> formula ind
+R6771:6775 Inductive.CNFOp <> remcf def
+R6777:6791 Inductive.CNFOp <> example_clause1 def
+R6793:6807 Inductive.CNFOp <> example_formula def
+R6819:6828 Inductive.CNFOp <> test_remcf def
