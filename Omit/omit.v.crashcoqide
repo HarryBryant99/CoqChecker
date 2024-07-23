@@ -1,0 +1,139 @@
+Open Scope list_scope.
+
+Require Import List.
+
+Require Import String.
+Require Import Ascii.
+Open Scope string_scope.
+
+Fixpoint eq_nat n m {struct n} : bool :=
+  match n, m with
+    | O, O => true
+    | O, S _ => false
+    | S _, O => false
+    | S n1, S m1 => eq_nat n1 m1
+  end.
+
+Compute eq_nat 2 43.
+
+Inductive literal : Type := 
+empty
+| l: string -> literal.
+
+
+Definition a : literal := l "a".
+
+Check l "a".
+Check empty.
+
+Definition bool_eqb (b1 b2:bool) : bool :=
+  match b1, b2 with
+    | true, true => true
+    | true, false => false
+    | false, true => false
+    | false, false => true
+  end.
+
+Definition ascii_eqb (a b : ascii) : bool :=
+ match a, b with
+ | Ascii a0 a1 a2 a3 a4 a5 a6 a7,
+   Ascii b0 b1 b2 b3 b4 b5 b6 b7 =>
+    bool_eqb a0 b0 && bool_eqb a1 b1 && bool_eqb a2 b2 && bool_eqb a3 b3
+    && bool_eqb a4 b4 && bool_eqb a5 b5 && bool_eqb a6 b6 && bool_eqb a7 b7
+ end.
+
+Definition andb (b1:bool) (b2:bool) : bool :=
+  match b1 with
+  | true => b2
+  | false => false
+  end.
+
+Fixpoint compare s1 s2 : bool :=
+ match s1, s2 with
+ | EmptyString, EmptyString => true
+ | String c1 s1', String c2 s2' => ascii_eqb c1 c2 && compare s1' s2'
+ | _,_ => false
+ end.
+
+Fixpoint append (s1 s2 : string) {struct s1} : string :=
+  match s1 with
+  | EmptyString => s2
+  | String c s1' => String c (s1' ++ s2)
+  end.
+
+Definition not (a b neg: string) : bool := 
+if (compare a (append neg b)) then true 
+else if (compare b (append neg a))  then true
+else false.
+
+Compute not "!s" "s" "!".
+
+Fixpoint omit (l:list string) (c:nat) {struct l} : list string :=
+    match l with
+      | nil => nil
+      | a :: tail => if (eq_nat c 0) then tail else a :: omit tail (c-1)
+    end.
+
+Compute omit ("a"::"b"::"c"::nil) 0.
+
+Fixpoint lt (n m : nat) : bool :=
+  match n with
+  | O => match m with
+         | O => false
+         | S m => true
+         end
+  | S n' => match m with
+            | O => false
+            | S m' => lt n' m'
+            end
+  end.
+
+Fixpoint length (l:list string) : nat :=
+  match l with
+    | nil => 0
+    | _ :: m => S (length m)
+  end.
+
+Fixpoint nth (n:nat) (l:list string) (default:string) {struct l} : string :=
+  match n, l with
+    | O, x :: l' => x
+    | O, other => default
+    | S m, nil => default
+    | S m, x :: t => nth m t default
+  end.
+
+Fixpoint loop (l:list string) (n neg:string) (c:nat):=
+match l with
+nil => 0
+| a::tl => if not a n neg then c else loop tl n neg c+1
+end.
+
+Fixpoint loop1 (l m:list string) (neg:string):=
+match l with
+nil => 0
+| a::tl => if lt (loop m a neg 0) (length m) then (loop m a neg 0) else loop1 tl m neg
+end.
+
+(*
+let r := loop1 tl m neg in if lt (loop m a neg 0) (length m) then (loop m a neg 0) else r+1
+*)
+
+Fixpoint app (l m:list string) {struct l} : list string:=
+    match l with
+      | nil => m
+      | a :: l1 => a :: app l1 m
+    end.
+
+Definition listA := ("a"::"b"::"d"::nil).
+Definition listB := ("e"::"f"::"!a"::nil).
+
+Compute nth 1 listA "".
+
+Definition listAPos := loop1 listB listA "!".
+Definition listBPos := loop listB (nth listAPos listA "") "!" 0.
+
+Compute omit listA listAPos.
+Compute omit listB listBPos.
+
+Compute app (omit listA listAPos) (omit listB listBPos).
+
