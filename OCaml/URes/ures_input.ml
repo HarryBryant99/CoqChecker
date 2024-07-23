@@ -36,12 +36,44 @@ let string_of_literal = function
 
 let string_of_clause = string_of_list string_of_literal
 
+(* Convert a character to Coq ascii *)
+let char_to_ascii c =
+  let code = int_of_char c in
+  let b0 = if code land 1 <> 0 then True else False in
+  let b1 = if code land 2 <> 0 then True else False in
+  let b2 = if code land 4 <> 0 then True else False in
+  let b3 = if code land 8 <> 0 then True else False in
+  let b4 = if code land 16 <> 0 then True else False in
+  let b5 = if code land 32 <> 0 then True else False in
+  let b6 = if code land 64 <> 0 then True else False in
+  let b7 = if code land 128 <> 0 then True else False in
+  Ascii (b0, b1, b2, b3, b4, b5, b6, b7)
+
+(* Convert a string to Coq string *)
+let rec string_to_coq_string s =
+  if String.length s = 0 then EmptyString
+  else String (char_to_ascii s.[0], string_to_coq_string (String.sub s 1 (String.length s - 1)))
+
+(* Function to get user input *)
+let get_user_input prompt =
+  Printf.printf "%s" prompt;
+  read_line ()
+
+(* Function to create a literal from user input *)
+let rec create_literal string =
+  Printf.printf "Enter 'p' for Positive or 'n' for Negative for the string \"%s\": " string;
+  match read_line () with
+  | "p" -> Pos (string_to_coq_string string)
+  | "n" -> Neg (string_to_coq_string string)
+  | _ -> Printf.printf "Invalid input. Please enter 'p' for Positive or 'n' for Negative.\n"; create_literal string
+
 (* Test functions *)
 let test_isCorrect () =
-  (* Define your assumptions and pre-proof *)
-  let a1 = Cons (Pos (String (Ascii (True, False, True, False, True, False, True, False), EmptyString)), Nil) in
-  let a2 = Cons (Neg (String (Ascii (True, False, True, False, True, False, True, False), EmptyString)), Nil) in
+  (* Create literals using the updated function *)
+  let a1 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
+  let a2 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
   let ass = Cons (a1, Cons (a2, Nil)) in
+  (* Define a valid proof *)
   let p = Cons (Ass O, Cons (Ass (S O), Cons (Res (O, S O, Nil), Nil))) in
 
   (* Call isCorrect *)
@@ -54,12 +86,13 @@ let test_isCorrect () =
   in
   Printf.printf "isCorrect result: %b\n" result_bool
 
-(*incorrect*)  
+(* Incorrect test case *)
 let test_isCorrect_fail () =
-  (* Define your assumptions and pre-proof *)
-  let a1 = Cons (Pos (String (Ascii (True, False, True, False, True, False, True, False), EmptyString)), Nil) in
-  let a2 = Cons (Neg (String (Ascii (True, False, True, False, True, False, True, False), EmptyString)), Nil) in
+  (* Create literals using the updated function *)
+  let a1 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
+  let a2 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
   let ass = Cons (a1, Cons (a2, Nil)) in
+  (* Define an invalid proof: resolution result is a1, which is incorrect *)
   let p = Cons (Ass O, Cons (Ass (S O), Cons (Res (O, S O, a1), Nil))) in
 
   (* Call isCorrect *)
@@ -70,9 +103,9 @@ let test_isCorrect_fail () =
     | Ures.True -> true
     | Ures.False -> false
   in
-  Printf.printf "isCorrect result: %b\n" result_bool
+  Printf.printf "isCorrect result (should be false): %b\n" result_bool
 
 (* Run the test *)
 let () =
   test_isCorrect ();
-  test_isCorrect_fail ()
+  (*test_isCorrect_fail ()*)

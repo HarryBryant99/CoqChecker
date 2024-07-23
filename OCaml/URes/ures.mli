@@ -11,8 +11,6 @@ type 'a list =
 | Nil
 | Cons of 'a * 'a list
 
-val app : 'a1 list -> 'a1 list -> 'a1 list
-
 type sumbool =
 | Left
 | Right
@@ -60,13 +58,13 @@ type conclusion = clause list
 
 val length : 'a1 list -> nat
 
-val findAssumption : assumption -> preProof -> nat -> clause
+val findAssumption : assumption -> nat -> clause
 
 val findConclusion : nat -> conclusion -> clause
 
 val lit_eq_dec_bool : literal -> literal -> bool
 
-val remove : literal -> literal list -> literal list
+val remove2 : literal -> literal list -> literal list
 
 val remove_literal_from_clause_bool : literal -> clause -> clause
 
@@ -76,11 +74,7 @@ val clause_head : clause -> literal -> literal
 
 val toResConclusion : clause -> clause -> clause
 
-val get_k : proofStep -> clause
-
-val add_clause : conclusion -> clause -> conclusion
-
-val conclusions : assumption -> conclusion -> preProof -> conclusion
+val conclusions : assumption -> preProof -> conclusion
 
 val ltb0 : nat -> nat -> bool
 
@@ -94,9 +88,8 @@ val clause_eqb : clause -> clause -> bool
 
 val isRes : clause -> clause -> clause -> bool
 
-val isCorrectLastStep :
-  assumption -> conclusion -> proofStep -> preProof -> bool
+val isCorrectLastStep : assumption -> conclusion -> proofStep -> bool
 
-val checkAll : assumption -> conclusion -> preProof -> bool
+val checkAll : assumption -> preProof -> conclusion -> bool
 
 val isCorrect : assumption -> preProof -> bool

@@ -11,6 +11,13 @@ type 'a list =
 | Nil
 | Cons of 'a * 'a list
 
+(** val app : 'a1 list -> 'a1 list -> 'a1 list **)
+
+let rec app l m =
+  match l with
+  | Nil -> m
+  | Cons (a, l1) -> Cons (a, (app l1 m))
+
 type sumbool =
 | Left
 | Right
@@ -168,9 +175,9 @@ let rec length = function
 | Nil -> O
 | Cons (_, l') -> S (length l')
 
-(** val findAssumption : assumption -> nat -> clause **)
+(** val findAssumption : assumption -> preProof -> nat -> clause **)
 
-let findAssumption ass i =
+let findAssumption ass _ i =
   nth i ass Nil
 
 (** val findConclusion : nat -> conclusion -> clause **)
@@ -195,19 +202,19 @@ let lit_eq_dec_bool a b =
                   | Left -> True
                   | Right -> False))
 
-(** val remove2 : literal -> literal list -> literal list **)
+(** val remove : literal -> literal list -> literal list **)
 
-let rec remove2 x = function
+let rec remove x = function
 | Nil -> Nil
 | Cons (y, tl) ->
   (match lit_eq_dec_bool x y with
-   | True -> remove2 x tl
-   | False -> Cons (y, (remove2 x tl)))
+   | True -> remove x tl
+   | False -> Cons (y, (remove x tl)))
 
 (** val remove_literal_from_clause_bool : literal -> clause -> clause **)
 
 let remove_literal_from_clause_bool =
-  remove2
+  remove
 
 (** val opposite : literal -> literal **)
 
@@ -228,14 +235,27 @@ let toResConclusion c1 c2 =
   remove_literal_from_clause_bool
     (opposite (clause_head c2 (Pos EmptyString))) c1
 
-(** val conclusions : assumption -> preProof -> conclusion **)
+(** val get_k : proofStep -> clause **)
 
-let rec conclusions ass = function
-| Nil -> Nil
+let get_k = function
+| Ass _ -> Nil
+| Res (_, _, k) -> k
+
+(** val add_clause : conclusion -> clause -> conclusion **)
+
+let add_clause r c =
+  app r (Cons (c, Nil))
+
+(** val conclusions : assumption -> conclusion -> preProof -> conclusion **)
+
+let rec conclusions ass r p = match p with
+| Nil -> r
 | Cons (step, tl) ->
   (match step with
-   | Ass i -> Cons ((findAssumption ass i), (conclusions ass tl))
-   | Res (_, _, k) -> Cons (k, (conclusions ass tl)))
+   | Ass i ->
+     let r' = add_clause r (findAssumption ass p i) in conclusions ass r' tl
+   | Res (_, _, _) ->
+     let r' = add_clause r (get_k step) in conclusions ass r' tl)
 
 (** val ltb0 : nat -> nat -> bool **)
 
@@ -296,32 +316,33 @@ let isRes c1 c2 k =
   | True -> clause_eqb (toResConclusion c1 c2) k
   | False -> False
 
-(** val isCorrectLastStep : assumption -> conclusion -> proofStep -> bool **)
+(** val isCorrectLastStep :
+    assumption -> conclusion -> proofStep -> preProof -> bool **)
 
-let isCorrectLastStep ass conclusionpl = function
-| Ass n -> ltb0 n (length ass)
-| Res (n, m, k) ->
-  let lengthConcll = length conclusionpl in
-  (match ltb0 n lengthConcll with
-   | True ->
-     (match ltb0 m lengthConcll with
-      | True ->
-        isRes (findConclusion n conclusionpl) (findConclusion m conclusionpl)
-          k
-      | False -> False)
-   | False -> False)
-
-(** val checkAll : assumption -> preProof -> conclusion -> bool **)
-
-let rec checkAll ass pl c =
-  match pl with
-  | Nil -> True
-  | Cons (p, l) ->
-    (match isCorrectLastStep ass c p with
-     | True -> checkAll ass l c
+let isCorrectLastStep ass conclusionpl p _ =
+  match p with
+  | Ass n -> ltb0 n (length ass)
+  | Res (n, m, k) ->
+    let lengthConcll = length conclusionpl in
+    (match ltb0 n lengthConcll with
+     | True ->
+       (match ltb0 m lengthConcll with
+        | True ->
+          isRes (findConclusion n conclusionpl)
+            (findConclusion m conclusionpl) k
+        | False -> False)
      | False -> False)
+
+(** val checkAll : assumption -> conclusion -> preProof -> bool **)
+
+let rec checkAll ass conclusionpl pl = match pl with
+| Nil -> True
+| Cons (p, l) ->
+  (match isCorrectLastStep ass conclusionpl p pl with
+   | True -> checkAll ass conclusionpl l
+   | False -> False)
 
 (** val isCorrect : assumption -> preProof -> bool **)
 
 let isCorrect ass pl =
-  let c = conclusions ass pl in checkAll ass pl c
+  let conclusionpl = conclusions ass Nil pl in checkAll ass conclusionpl pl
