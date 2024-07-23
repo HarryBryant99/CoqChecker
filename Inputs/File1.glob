@@ -1,0 +1,9 @@
+DIGEST 6864edd54f0c54d0783d79db1d449216
+FTest.File1
+ax 28:28 <> A
+def 51:61 <> example_def
+R66:69 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R65:65 Test.File1 <> A defax
+R70:70 Test.File1 <> A defax
+binder 79:79 <> x:2
+R84:84 Test.File1 <> x:2 var
