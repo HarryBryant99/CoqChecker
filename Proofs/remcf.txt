@@ -1,0 +1,52 @@
+Require Import Bool String.
+
+Inductive literal : Type :=
+  | pos : string -> literal
+  | neg : string -> literal.
+
+Inductive clause : Type :=
+  | nilclause : clause
+  | consclause : literal -> clause -> clause.
+
+Inductive formula : Type :=
+  | nilformula : formula
+  | consformula : clause -> formula -> formula.
+
+Fixpoint NoEmptyClause (c : clause) : bool :=
+  match c with
+  | nilclause => false
+  | consclause _ _ => true
+  end.
+
+Fixpoint NoEmptyFormula (f : formula) : bool :=
+  match f with
+  | nilformula => true
+  | consformula c rest => NoEmptyClause c && NoEmptyFormula rest
+  end.
+
+Fixpoint remcf (c : clause) (f : formula) : formula :=
+  match f with
+  | nilformula => nilformula
+  | consformula c' rest => if c =? c' then remcf c rest else consformula c' (remcf c rest)
+  end.
+
+Lemma NoEmptyFormula_remcf : forall c f,
+  NoEmptyFormula f -> NoEmptyFormula (remcf c f).
+Proof.
+  intros c f H.
+  induction f as [|c' rest IH].
+  - (* Base case: f is nilformula *)
+    simpl. reflexivity.
+  - (* Inductive case: f is consformula c' rest *)
+    simpl. simpl in H.
+    destruct (c =? c') eqn:Eq.
+    + (* c is equal to c' *)
+      apply andb_true_iff in H as [Hc' Hrest].
+      apply IH in Hrest.
+      rewrite Hrest. reflexivity.
+    + (* c is not equal to c' *)
+      apply andb_true_iff in H as [Hc' Hrest].
+      apply andb_true_intro. split.
+      * assumption.
+      * apply IH. assumption.
+Qed.
