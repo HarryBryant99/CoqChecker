@@ -1,0 +1,257 @@
+(* This program is free software; you can redistribute it and/or      *)
+(* modify it under the terms of the GNU Lesser General Public License *)
+(* as published by the Free Software Foundation; either version 2.1   *)
+(* of the License, or (at your option) any later version.             *)
+(*                                                                    *)
+(* This program is distributed in the hope that it will be useful,    *)
+(* but WITHOUT ANY WARRANTY; without even the implied warranty of     *)
+(* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *)
+(* GNU General Public License for more details.                       *)
+(*                                                                    *)
+(* You should have received a copy of the GNU Lesser General Public   *)
+(* License along with this program; if not, write to the Free         *)
+(* Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA *)
+(* 02110-1301 USA                                                     *)
+
+
+Require Import List.
+Require Extraction.
+
+Inductive letter : Set :=
+  | A : letter
+  | B : letter.
+
+Definition word := list letter.
+
+Inductive emb : word -> word -> Prop :=
+  | emb0 : forall ys : word, emb nil ys
+  | emb1 :
+      forall (xs ys : list letter) (y : letter),
+      emb xs ys -> emb xs (y :: ys)
+  | emb2 :
+      forall (xs ys : list letter) (x : letter),
+      emb xs ys -> emb (x :: xs) (x :: ys).
+
+The predicate L is defined inductively and captures two conditions:
+L0: If a word w is embedded in v, then the list (w :: ws) satisfies the predicate.
+L1: If the predicate holds for the tail of the list ws with respect to v, then it also holds for the entire list (w :: ws).
+
+Inductive L (v : word) : list word -> Prop :=
+  | L0 : forall (w : word) (ws : list word), emb w v -> L v (w :: ws)
+  | L1 : forall (w : word) (ws : list word), L v ws -> L v (w :: ws).
+
+The good predicate is defined inductively and captures two conditions:
+good0: If there exists a word w such that the predicate L w ws holds, then the list (w :: ws) satisfies the good predicate.
+good1: If the good predicate holds for the tail of the list ws, then it also holds for the entire list (w :: ws).
+
+Inductive good : list word -> Prop :=
+  | good0 : forall (ws : list word) (w : word), L w ws -> good (w :: ws)
+  | good1 : forall (ws : list word) (w : word), good ws -> good (w :: ws).
+
+The R relation is defined inductively and captures two conditions:
+R0: The relation holds when both lists are empty.
+R1: If the relation holds for lists vs and ws, then it also holds for the lists obtained by adding a word w at the front of vs and adding the list (a :: w) at the front of ws.
+
+Inductive R (a : letter) : list word -> list word -> Prop :=
+  | R0 : R a nil nil
+  | R1 :
+      forall (vs ws : list word) (w : word),
+      R a vs ws -> R a (w :: vs) ((a :: w) :: ws).
+
+The T relation is defined inductively and captures three conditions:
+T0: If a is not equal to b and there is a relation R b ws zs, then the relation T holds for the lists obtained by adding a word w at the front of zs and adding the list (a :: w) at the front of zs.
+T1: If the relation T holds for lists ws and zs, then it also holds for the lists obtained by adding a word w at the front of ws and adding the list (a :: w) at the front of zs.
+T2: If a is not equal to b and the relation T holds for lists ws and zs, then it also holds for the lists obtained by adding the list (b :: w) at the front of zs.
+
+Inductive T (a : letter) : list word -> list word -> Prop :=
+  | T0 :
+      forall (b : letter) (w : word) (ws zs : list word),
+      a <> b -> R b ws zs -> T a (w :: zs) ((a :: w) :: zs)
+  | T1 :
+      forall (w : word) (ws zs : list word),
+      T a ws zs -> T a (w :: ws) ((a :: w) :: zs)
+  | T2 :
+      forall (b : letter) (w : word) (ws zs : list word),
+      a <> b -> T a ws zs -> T a ws ((b :: w) :: zs).
+
+The bar type is defined inductively with two constructors:
+bar1: Represents a case where the predicate good holds for the list of words ws.
+bar2: Represents a case where, for any word w, a value of type bar (w :: ws) can be constructed, implying that bar holds for the list obtained by adding any word at the front of ws.
+
+Inductive bar : list word -> Set :=
+  | bar1 : forall ws : list word, good ws -> bar ws
+  | bar2 : forall ws : list word, (forall w : word, bar (w :: ws)) -> bar ws.
+
+Hint Constructors emb.
+Hint Constructors L.
+Hint Constructors good.
+Hint Constructors R.
+Hint Constructors T. 
+Hint Constructors bar.
+Hint Extern 5 (?X1 <> ?X2) => intro; discriminate.
+
+Theorem named prop1 asserting that for any list of words ws, the property bar (nil :: ws) holds. The auto tactic is then used to automatically attempt to prove this theorem. Additionally, the Hint Resolve prop1 command exports prop1 as a hint to be used in later proof steps.
+
+Theorem prop1 : forall ws : list word, bar (nil :: ws).
+auto.
+Defined.
+Hint Resolve prop1.
+
+Theorem asserts the existence of a list of words vs such that is_prefix word vs f and good vs hold for a given function f : nat -> word. The eauto tactic is then used to attempt an automatic proof of this existential statement.
+
+Theorem lemma1 :
+ forall (ws : list word) (xs : word) (x : letter), L xs ws -> L (x :: xs) ws.
+simple induction 1; auto.
+Defined.
+Hint Resolve lemma1.
+
+A proof using induction and inversion tactics. The Hint Resolve command exports the theorem as a hint for later proof steps.
+
+Theorem lemma2' :
+ forall (vs ws : list word) (x : letter) (xs : word),
+ R x vs ws -> L xs vs -> L (x :: xs) ws.
+simple induction 1.
+inversion 1.
+inversion 3; auto.
+Defined.
+Hint Resolve lemma2'.
+
+Proof using induction and inversion tactics. The Hint Resolve command exports the theorem as a hint for later proof steps.
+
+Theorem lemma2 :
+ forall (vs ws : list word) (a : letter), R a vs ws -> good vs -> good ws.
+simple induction 1; auto.
+inversion 3; eauto.
+Defined.
+Hint Resolve lemma2.
+
+Proof using induction and inversion tactics. The Hint Resolve command exports the theorem as a hint for later proof steps.
+
+Theorem lemma3' :
+ forall (vs ws : list word) (x : letter) (xs : word),
+ T x vs ws -> L xs vs -> L (x :: xs) ws.
+simple induction 1; auto; inversion 3; auto.
+Qed.
+Hint Resolve lemma3'.
+
+Proof using induction and inversion tactics. The Hint Resolve command exports the theorem as a hint for later proof steps.
+
+Theorem lemma3 :
+ forall (ws zs : list word) (a : letter), T a ws zs -> good ws -> good zs.
+simple induction 1; auto; inversion 3; eauto.
+Defined.
+Hint Resolve lemma3.
+
+Proof using induction, case analysis, and various tactics. The Hint Resolve command exports the theorem as a hint for later proof steps.
+
+Theorem lemma4 :
+ forall (ws zs : list word) (a : letter), R a ws zs -> ws <> nil -> T a ws zs.
+simple induction 1.
+tauto.
+intro.
+case vs.
+inversion 1.
+intros.
+case a.
+apply (T0 A B w nil); auto.
+apply (T0 B A w nil); auto.
+auto.
+Defined.
+Hint Resolve lemma4.
+
+Theorem named letter_neq, which asserts that for any letters a, b, and c, if a is not equal to b (a <> b) and c is not equal to a (c <> a), then c must be equal to b. The case tactic is used to perform a case analysis on the letters, and the tauto tactic is used to automatically solve the goals.
+
+Theorem letter_neq : forall a b c : letter, a <> b -> c <> a -> c = b.
+intros a b c; case a; case b; case c; tauto.
+Qed.
+
+Theorem named letter_eq_dec, which asserts that for any letters a and b, there exists a decidable equality between them ({a = b} + {a <> b}). The decide equality tactic is used to automatically decide the equality or inequality between the letters.
+
+Theorem letter_eq_dec : forall a b : letter, {a = b} + {a <> b}.
+intros.
+decide equality.
+Defined.
+
+Theorem named prop2, which asserts that for any letters a and b, a list of words xs, if a <> b, bar xs holds, and for any other lists of words ys and zs, if bar ys and T a xs zs and T b ys zs hold, then bar zs holds. The simple induction tactic is used to perform induction on the first hypothesis, and various tactics such as eauto, apply, and case are used to construct the proof. The Hint Resolve command exports prop2 as a hint for future proof steps.
+
+Theorem prop2 :
+ forall (a b : letter) (xs : list word),
+ a <> b ->
+ bar xs ->
+ forall ys : list word,
+ bar ys -> forall zs : list word, T a xs zs -> T b ys zs -> bar zs.
+intros a b xs neq.
+simple induction 1.
+eauto.
+simple induction 3.
+eauto.
+intros.
+apply bar2.
+intro.
+case w.
+apply prop1.
+intros.
+elim (letter_eq_dec l a).
+intro; rewrite a0; eauto.
+intro; rewrite (letter_neq a b l neq b2); eauto.
+Defined.
+Hint Resolve prop2.
+
+Theorem named prop3, which asserts that for any letter a and a list of words xs, if bar xs holds, and for any other list of words zs, if xs <> nil and R a xs zs hold, then bar zs holds. The simple induction tactic is used to perform induction on the first hypothesis, and various tactics such as eauto, apply, and elim are used to construct the proof. The Hint Resolve command exports prop3 as a hint for future proof steps.
+
+Theorem prop3 :
+ forall (a : letter) (xs : list word),
+ bar xs -> forall zs : list word, xs <> nil -> R a xs zs -> bar zs.
+simple induction 1.
+eauto.
+intros.
+apply bar2.
+simple induction w.
+auto.
+intros.
+elim (letter_eq_dec a0 a).
+intro. 
+rewrite a1; eauto.
+intro.
+apply (prop2 a0 a (l :: zs) b0 H3 ws); eauto.
+Defined.
+Hint Resolve prop3.
+
+Theorem asserts that the empty list of words nil satisfies the bar property. The apply bar2 tactic is used to apply the constructor bar2, and the simple induction tactic is used to perform induction on the word w. The eauto tactic is used to automatically solve the goals. The Hint Resolve command exports higman as a hint for future proof steps.
+
+Theorem higman : bar nil.
+apply bar2.
+simple induction w; eauto.
+Defined.
+Hint Resolve higman.
+
+Defines an inductive predicate is_prefix that captures the notion of a list being a prefix of a function. The is_prefix predicate is parameterized by a set A and defined over lists of type A and functions of type nat -> A. The Hint Constructors command is used to export the constructors of the is_prefix predicate as hints for automated proof tactics.
+
+Inductive is_prefix (A : Set) : list A -> (nat -> A) -> Prop :=
+  | is_prefix_nil : forall f : nat -> A, is_prefix A nil f
+  | is_prefix_cons :
+      forall (f : nat -> A) (x : A) (xs : list A),
+      x = f (length xs) -> is_prefix A xs f -> is_prefix A (x :: xs) f.
+Hint Constructors is_prefix.
+
+Lemma asserts that for a given list of words ws, a function f : nat -> word, if bar ws and is_prefix word ws f hold, then there exists a list of words vs such that is_prefix word vs f and good vs. The simple induction tactic is used to perform structural induction on the assumption bar ws, and the proof is completed using the auto and eauto tactics. The Hint Resolve good_prefix_lemma command exports good_prefix_lemma as a hint for future proof steps.
+
+Theorem good_prefix_lemma :
+ forall (ws : list word) (f : nat -> word),
+ bar ws ->
+ is_prefix word ws f -> {vs : list word | is_prefix word vs f /\ good vs}.
+simple induction 1.
+intros.
+exists ws0; auto.
+eauto.
+Defined.
+Hint Resolve good_prefix_lemma.
+
+Theorem named good_prefix, which asserts the existence of a list of words vs such that is_prefix word vs f and good vs hold for a given function f : nat -> word. The eauto tactic is then used to attempt an automatic proof of this existential statement.
+
+Theorem good_prefix :
+ forall f : nat -> word, {vs : list word | is_prefix word vs f /\ good vs}.
+eauto.
+Defined.
+
+Extraction "higman.ml" good_prefix.
