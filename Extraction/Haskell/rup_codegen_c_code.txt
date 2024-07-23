@@ -1,0 +1,196 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_CHAR 100
+typedef char string[MAX_CHAR+1];
+
+int main() {
+    // Write C code here
+    printf("Hello world");
+
+    return 0;
+}
+
+list clause(list v1_b1, list v2_b2)
+{
+  list v3_l;
+  list v4_l;
+  v3_l = loop(v1_b1, v2_b2);
+  v4_l = loop(v2_b2, v1_b1);
+  return app_unique(v3_l, v4_l);
+}
+
+list loop(list v1_l, list v2_n)
+{
+  string v3_a;
+  list v4_tl;
+  list v5_l;
+  entry_loop:
+  switch (sw_list(v1_l))
+  {
+    default:
+      return v2_n;
+    case cons_tag:
+      v3_a = cons_get_member_0(v1_l);
+      v4_tl = cons_get_member_1(v1_l);
+      v5_l = rup(v3_a, v2_n);
+      v1_l = v4_tl;
+      v2_n = v5_l;
+      goto entry_loop;
+  }
+}
+
+list rup(string v1_n, list v2_l)
+{
+  string v3_a;
+  list v4_tl;
+  list v5_r;
+  bool v6_b;
+  bool v7_b;
+  bool v8_b;
+  bool v9_b;
+  bool v10_b;
+  bool v11_b;
+  bool v12_b;
+  bool v13_b;
+  ascii v14_a;
+  string v15_s;
+  string v16_s;
+  string v17_s;
+  bool v18_b;
+  bool v19_b;
+  bool v20_b;
+  bool v21_b;
+  bool v22_b;
+  bool v23_b;
+  bool v24_b;
+  bool v25_b;
+  bool v26_b;
+  ascii v27_a;
+  string v28_s;
+  string v29_s;
+  string v30_s;
+  bool v31_b;
+  list v32_l;
+  list v33_l;
+  switch (sw_list(v2_l))
+  {
+    default:
+      return nil();
+    case cons_tag:
+      v3_a = cons_get_member_0(v2_l);
+      v4_tl = cons_get_member_1(v2_l);
+      v5_r = rup(v1_n, v4_tl);
+      v6_b = true();
+      v7_b = false();
+      v8_b = false();
+      v9_b = false();
+      v10_b = false();
+      v11_b = true();
+      v12_b = false();
+      v13_b = false();
+      v14_a = Ascii(v6_b, v7_b, v8_b, v9_b, v10_b, v11_b, v12_b, v13_b);
+      v15_s = EmptyString();
+      v16_s = String(v14_a, v15_s);
+      v17_s = append(v16_s, v3_a);
+      v18_b = eqb(v17_s, v1_n);
+      switch (sw_bool(v18_b))
+      {
+        default:
+          return v5_r;
+        case false_tag:
+          v19_b = true();
+          v20_b = false();
+          v21_b = false();
+          v22_b = false();
+          v23_b = false();
+          v24_b = true();
+          v25_b = false();
+          v26_b = false();
+          v27_a = Ascii(v19_b, v20_b, v21_b, v22_b, v23_b, v24_b, v25_b, v26_b);
+          v28_s = EmptyString();
+          v29_s = String(v27_a, v28_s);
+          v30_s = append(v29_s, v1_n);
+          v31_b = eqb(v30_s, v3_a);
+          switch (sw_bool(v31_b))
+          {
+            default:
+              return v5_r;
+            case false_tag:
+              v32_l = nil();
+              v33_l = cons(v3_a, v32_l);
+              return app(v33_l, v5_r);
+          }
+      }
+  }
+}
+
+list app_unique(list v1_l, list v2_m)
+{
+  string v3_a;
+  list v4_l1;
+  bool v5_b;
+  list v6_l;
+  entry_app_unique:
+  switch (sw_list(v1_l))
+  {
+    default:
+      return v2_m;
+    case cons_tag:
+      v3_a = cons_get_member_0(v1_l);
+      v4_l1 = cons_get_member_1(v1_l);
+      v5_b = already(v3_a, v2_m);
+      switch (sw_bool(v5_b))
+      {
+        default:
+          v1_l = v4_l1;
+          goto entry_app_unique;
+        case false_tag:
+          v6_l = app_unique(v4_l1, v2_m);
+          return cons(v3_a, v6_l);
+      }
+  }
+}
+
+list app(list v1_l, list v2_m)
+{
+  string v3_a;
+  list v4_l1;
+  list v5_l;
+  switch (sw_list(v1_l))
+  {
+    default:
+      return v2_m;
+    case cons_tag:
+      v3_a = cons_get_member_0(v1_l);
+      v4_l1 = cons_get_member_1(v1_l);
+      v5_l = app(v4_l1, v2_m);
+      return cons(v3_a, v5_l);
+  }
+}
+
+bool already(string v1_n, list v2_l)
+{
+  string v3_a;
+  list v4_tl;
+  bool v5_r;
+  bool v6_b;
+  switch (sw_list(v2_l))
+  {
+    default:
+      return false();
+    case cons_tag:
+      v3_a = cons_get_member_0(v2_l);
+      v4_tl = cons_get_member_1(v2_l);
+      v5_r = already(v1_n, v4_tl);
+      v6_b = eqb(v1_n, v3_a);
+      switch (sw_bool(v6_b))
+      {
+        default:
+          return true();
+        case false_tag:
+          return v5_r;
+      }
+  }
+}
