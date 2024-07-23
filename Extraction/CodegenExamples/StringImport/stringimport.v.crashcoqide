@@ -1,0 +1,56 @@
+Require Import codegen.codegen.
+
+Require Import String.
+Open Scope string_scope.
+
+Require Import Ascii.
+
+Definition string_dec : forall s1 s2 : string, {s1 = s2} + {s1 <> s2}.
+Proof.
+ decide equality; apply ascii_dec.
+Defined.
+
+Local Open Scope lazy_bool_scope.
+
+CodeGen InductiveType bool => "bool".
+CodeGen InductiveMatch bool => ""
+| true => "default"
+| false => "case 0".
+CodeGen Constant true => "true".
+CodeGen Constant false => "false".
+
+Definition bool_eqb (b1 b2:bool) : bool :=
+  match b1, b2 with
+    | true, true => true
+    | true, false => false
+    | false, true => false
+    | false, false => true
+  end.
+
+Definition ascii_eqb (a b : ascii) : bool :=
+ match a, b with
+ | Ascii a0 a1 a2 a3 a4 a5 a6 a7,
+   Ascii b0 b1 b2 b3 b4 b5 b6 b7 =>
+    bool_eqb a0 b0 && bool_eqb a1 b1 && bool_eqb a2 b2 && bool_eqb a3 b3
+    && bool_eqb a4 b4 && bool_eqb a5 b5 && bool_eqb a6 b6 && bool_eqb a7 b7
+ end.
+
+
+Fixpoint compare s1 s2 : bool :=
+ match s1, s2 with
+ | EmptyString, EmptyString => true
+ | String c1 s1', String c2 s2' => ascii_eqb c1 c2 && compare s1' s2'
+ | _,_ => false
+ end.
+
+Infix "=?" := compare : string_scope.
+
+Compute compare "a" "b".
+
+(*CodeGen Gen compare.*)
+
+CodeGen SourceFile "strings/stringimport/equal.c".
+(*CodeGen IndImp string.*)
+(*CodeGen IndImp ascii.*)
+CodeGen StaticFunc compare.
+CodeGen GenerateFile.

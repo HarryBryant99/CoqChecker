@@ -1,0 +1,12 @@
+Require Import String.
+Require Import Ascii.
+Open Scope string_scope.
+
+Inductive literal : Set :=
+  | EmptyString : literal
+  | String : ascii -> literal -> literal.
+
+Definition literal_dec : forall s1 s2 : literal, {s1 = s2} + {s1 <> s2}.
+Proof.
+ decide equality; apply ascii_dec.
+Defined.

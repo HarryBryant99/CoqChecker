@@ -1,0 +1,30 @@
+Fixpoint add n m :=
+  match n with
+  | 0 => m
+  | S p => add p (S m)
+  end.
+
+Compute add 1 2.
+
+
+Fixpoint add2 n m :=
+  match n with
+  | 0 => m
+  | S p => add2 p (S(S m))
+  end.
+
+Compute add2 2 1.
+
+Inductive even : nat -> Prop :=
+  | even_O : even 0
+  | even_S : forall n, odd n -> even (S n)
+  with odd : nat -> Prop :=
+    odd_S : forall n, even n -> odd (S n).
+
+Check 2.
+
+Fixpoint add_even (n m: even) : even := 
+  match n with
+  | O => m
+  | S n' => S(S(add_even n' m))
+  end.

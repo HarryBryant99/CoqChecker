@@ -1,0 +1,42 @@
+Require Import codegen.codegen.
+
+Require Import List.
+
+CodeGen InductiveType bool => "bool".
+CodeGen InductiveMatch bool => ""
+| true => "default"
+| false => "case 0".
+CodeGen Constant true => "true".
+CodeGen Constant false => "false".
+
+CodeGen InductiveType nat => "nat".
+CodeGen InductiveMatch nat => ""
+| O => "case 0"
+| S => "default" "predn".
+CodeGen Constant O => "0".
+CodeGen Primitive S => "succn".
+Print CodeGen Inductive nat.
+
+Fixpoint lef (n m:nat) {struct m} : bool :=
+  match n, m with
+  | O, _ => true
+  | _, O => false
+  | S n, S m => lef n m
+  end.
+
+Compute lef 2 2.
+
+Fixpoint count n l :=
+match l with
+nil => 0
+| a::tl =>
+let r := count n tl in if lef n a then 
+  if lef a n then 1+r else r
+  else r
+end.
+
+CodeGen SourceFile "lists/count_import.c".
+CodeGen IndImp List.
+CodeGen StaticFunc lef.
+CodeGen StaticFunc count.
+CodeGen GenerateFile.

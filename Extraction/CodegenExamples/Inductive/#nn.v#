@@ -1,0 +1,12 @@
+Require Import codegen.codegen.
+
+
+Fixpoint add n m :=
+  match n with 
+  | O => m
+  | S n' => S (add n' m)
+end.
+
+Compute add 1 2.
+
+CodeGen Gen add.
