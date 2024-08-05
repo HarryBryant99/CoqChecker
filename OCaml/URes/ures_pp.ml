@@ -16,7 +16,7 @@ let string_of_nat n =
 
 let rec string_of_list string_of_elem = function
   | Nil -> "[]"
-  | Cons (x, xs) -> Printf.sprintf "%s :: %s" (string_of_elem x) (string_of_list string_of_elem xs)
+  | Cons (x, xs) -> Printf.sprintf "[%s] :: %s" (string_of_elem x) (string_of_list string_of_elem xs)
 
 let char_of_ascii (Ascii (b0, b1, b2, b3, b4, b5, b6, b7)) =
   let bit_to_int = function
@@ -42,7 +42,8 @@ let string_of_literal = function
   | Pos s -> Printf.sprintf "Pos \"%s\"" (string_of_string s)
   | Neg s -> Printf.sprintf "Neg \"%s\"" (string_of_string s)
 
-let string_of_clause = string_of_list string_of_literal
+let string_of_clause clause =
+  Printf.sprintf "[%s]" (string_of_list string_of_literal clause)
 
 let string_of_proof_step = function
   | Ass n -> Printf.sprintf "Ass %s" (string_of_nat n)
@@ -68,7 +69,8 @@ let string_of_literal = function
   | Pos s -> Printf.sprintf "Pos %s" (string_of_string s)
   | Neg s -> Printf.sprintf "Neg %s" (string_of_string s)
 
-let string_of_clause = string_of_list string_of_literal
+let string_of_clause clause =
+  Printf.sprintf "[%s]" (string_of_list string_of_literal clause)
 
 (* Convert a character to Coq ascii *)
 let char_to_ascii c =
@@ -94,19 +96,51 @@ let get_user_input prompt =
   read_line ()
 
 (* Function to create a literal from user input *)
-let rec create_literal string =
-  Printf.printf "Enter 'p' for Positive or 'n' for Negative for the string \"%s\": " string;
+let rec create_literal () =
+  let str = get_user_input "Enter the string for the literal: " in
+  Printf.printf "Enter 'p' for Positive or 'n' for Negative for the string \"%s\": " str;
   match read_line () with
-  | "p" -> Pos (string_to_coq_string string)
-  | "n" -> Neg (string_to_coq_string string)
-  | _ -> Printf.printf "Invalid input. Please enter 'p' for Positive or 'n' for Negative.\n"; create_literal string
+  | "p" -> Pos (string_to_coq_string str)
+  | "n" -> Neg (string_to_coq_string str)
+  | _ -> Printf.printf "Invalid input. Please enter 'p' for Positive or 'n' for Negative.\n"; create_literal ()
+
+(* Function to create a clause from user input *)
+let create_clause () =
+  let rec aux acc =
+    let lit = create_literal () in
+    match get_user_input "Do you want to add another literal to the clause? (y/n): " with
+    | "y" -> aux (Cons (lit, acc))
+    | "n" -> Cons (lit, acc) (* Add literal at the end *)
+    | _ -> Printf.printf "Invalid input. Please enter 'y' or 'n'.\n"; aux acc
+  in
+  (* Reverse the order of literals here *)
+  let reversed_clause = aux Nil in
+  let rec reverse_list acc = function
+    | Nil -> acc
+    | Cons (x, xs) -> reverse_list (Cons (x, acc)) xs
+  in reverse_list Nil reversed_clause
+
+(* Function to create assumptions from user input *)
+let create_assumptions () =
+  let rec aux acc =
+    let clause = create_clause () in
+    match get_user_input "Do you want to add another clause? (y/n): " with
+    | "y" -> aux (Cons (clause, acc)) (* Add clause at the end *)
+    | "n" -> Cons (clause, acc) (* Add clause at the end *)
+    | _ -> Printf.printf "Invalid input. Please enter 'y' or 'n'.\n"; aux acc
+  in
+  (* Reverse the order of clauses here *)
+  let reversed_assumptions = aux Nil in
+  let rec reverse_list acc = function
+    | Nil -> acc
+    | Cons (x, xs) -> reverse_list (Cons (x, acc)) xs
+  in reverse_list Nil reversed_assumptions
 
 (* Test functions *)
 let test_isCorrect_example () =
-  (* Create literals using the updated function *)
-  let a1 = Cons (create_literal (get_user_input "Enter the string for the first literal: "), Nil) in
-  let a2 = Cons (create_literal (get_user_input "Enter the string for the second literal: "), Nil) in
-  let ass = Cons (a1, Cons (a2, Nil)) in
+  (* Create assumptions using the updated function *)
+  let ass = create_assumptions () in
+  
   (* Define a valid proof *)
   let p = Cons (Ass O, Cons (Ass (S O), Cons (Res (O, S O, Nil), Nil))) in
 
