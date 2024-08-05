@@ -90,6 +90,19 @@ let rec string_to_coq_string s =
   if String.length s = 0 then EmptyString
   else String (char_to_ascii s.[0], string_to_coq_string (String.sub s 1 (String.length s - 1)))
 
+(* Convert an int to Ures.nat *)
+let rec int_to_nat n =
+  match n with
+  | 0 -> O
+  | n when n > 0 -> S (int_to_nat (n - 1))
+  | _ -> failwith "Negative integers are not supported"
+
+(* Calculate the length of a custom list *)
+let rec length lst =
+  match lst with
+  | Nil -> 0
+  | Cons (_, xs) -> 1 + length xs
+
 (* Function to get user input *)
 let get_user_input prompt =
   Printf.printf "%s" prompt;
@@ -106,19 +119,23 @@ let rec create_literal () =
 
 (* Function to create a clause from user input *)
 let create_clause () =
-  let rec aux acc =
-    let lit = create_literal () in
-    match get_user_input "Do you want to add another literal to the clause? (y/n): " with
-    | "y" -> aux (Cons (lit, acc))
-    | "n" -> Cons (lit, acc) (* Add literal at the end *)
-    | _ -> Printf.printf "Invalid input. Please enter 'y' or 'n'.\n"; aux acc
-  in
-  (* Reverse the order of literals here *)
-  let reversed_clause = aux Nil in
-  let rec reverse_list acc = function
-    | Nil -> acc
-    | Cons (x, xs) -> reverse_list (Cons (x, acc)) xs
-  in reverse_list Nil reversed_clause
+  let input = get_user_input "Enter literals or '[]' for an empty clause: " in
+  if input = "[]" then
+    Nil
+  else
+    let rec aux acc =
+      let lit = create_literal () in
+      match get_user_input "Do you want to add another literal to the clause? (y/n): " with
+      | "y" -> aux (Cons (lit, acc))
+      | "n" -> Cons (lit, acc) (* Add literal at the end *)
+      | _ -> Printf.printf "Invalid input. Please enter 'y' or 'n'.\n"; aux acc
+    in
+    (* Reverse the order of literals here *)
+    let reversed_clause = aux Nil in
+    let rec reverse_list acc = function
+      | Nil -> acc
+      | Cons (x, xs) -> reverse_list (Cons (x, acc)) xs
+    in reverse_list Nil reversed_clause
 
 (* Function to create assumptions from user input *)
 let create_assumptions () =
@@ -136,20 +153,55 @@ let create_assumptions () =
     | Cons (x, xs) -> reverse_list (Cons (x, acc)) xs
   in reverse_list Nil reversed_assumptions
 
+(* Function to create a proof step from user input *)
+let create_proof_step () =
+  Printf.printf "Enter 'a' for Assumption or 'r' for Resolution: ";
+  match read_line () with
+  | "a" ->
+    Printf.printf "Enter the assumption number (e.g., 0, 1, ...): ";
+    let n = read_line () |> int_of_string in
+    Ass (int_to_nat n) (* Convert to Ures.nat *)
+  | "r" ->
+    Printf.printf "Enter the indices for the resolutions (e.g., 0 1): ";
+    let indices = read_line () |> String.split_on_char ' ' |> List.map int_of_string in
+    let n1, n2 = match indices with
+      | [n1; n2] -> (n1, n2)
+      | _ -> failwith "Invalid input for resolution indices" in
+    Printf.printf "Create a clause for the resolution step:\n";
+    let clause = create_clause () in
+    Res (int_to_nat n1, int_to_nat n2, clause) (* Convert to Ures.nat *)
+  | _ -> failwith "Invalid input for proof step type"
+
+(* Function to create a proof from user input *)
+let create_proof () =
+  let rec aux acc =
+    let step = create_proof_step () in
+    match get_user_input "Do you want to add another proof step? (y/n): " with
+    | "y" -> aux (Cons (step, acc))
+    | "n" -> Cons (step, acc) (* Add step at the end *)
+    | _ -> Printf.printf "Invalid input. Please enter 'y' or 'n'.\n"; aux acc
+  in
+  (* Reverse the order of proof steps here *)
+  let reversed_proof = aux Nil in
+  let rec reverse_list acc = function
+    | Nil -> acc
+    | Cons (x, xs) -> reverse_list (Cons (x, acc)) xs
+  in reverse_list Nil reversed_proof
+
 (* Test functions *)
 let test_isCorrect_example () =
   (* Create assumptions using the updated function *)
   let ass = create_assumptions () in
   
-  (* Define a valid proof *)
-  let p = Cons (Ass O, Cons (Ass (S O), Cons (Res (O, S O, Nil), Nil))) in
+  (* Create proof using the updated function *)
+  let proof = create_proof () in
 
   (* Print the assumptions and proof *)
   Printf.printf "Assumptions: %s\n" (string_of_assumptions ass);
-  Printf.printf "Proof: %s\n" (string_of_proof p);
+  Printf.printf "Proof: %s\n" (string_of_proof proof);
 
   (* Call isCorrect *)
-  let result = Ures.isCorrect ass p in
+  let result = Ures.isCorrect ass proof in
 
   (* Convert Ures.bool to bool and print the result *)
   let result_bool = match result with
