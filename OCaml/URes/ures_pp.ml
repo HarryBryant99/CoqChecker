@@ -16,7 +16,7 @@ let string_of_nat n =
 
 let rec string_of_list string_of_elem = function
   | Nil -> "[]"
-  | Cons (x, xs) -> Printf.sprintf "[%s] :: %s" (string_of_elem x) (string_of_list string_of_elem xs)
+  | Cons (x, xs) -> Printf.sprintf "%s :: %s" (string_of_elem x) (string_of_list string_of_elem xs)
 
 let char_of_ascii (Ascii (b0, b1, b2, b3, b4, b5, b6, b7)) =
   let bit_to_int = function
@@ -104,8 +104,8 @@ let rec create_literal string =
 (* Test functions *)
 let test_isCorrect_example () =
   (* Create literals using the updated function *)
-  let a1 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
-  let a2 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
+  let a1 = Cons (create_literal (get_user_input "Enter the string for the first literal: "), Nil) in
+  let a2 = Cons (create_literal (get_user_input "Enter the string for the second literal: "), Nil) in
   let ass = Cons (a1, Cons (a2, Nil)) in
   (* Define a valid proof *)
   let p = Cons (Ass O, Cons (Ass (S O), Cons (Res (O, S O, Nil), Nil))) in
