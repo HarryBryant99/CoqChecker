@@ -459,10 +459,10 @@ Qed.
 
 Require Import Coq.Arith.Arith.
 
-Lemma in_assumptions : forall (ass0 : list Assumption) (n : nat),
+Lemma in_assumptions : forall (ass0 : Assumption)  (n : nat),
   ltb n (length ass0) = true -> In (nth n ass0 []) ass0.
 Proof.
-  intros ass0 n H.
+intros ass0 n H.
   apply Nat.ltb_lt in H.
   apply nth_In.
   rewrite <- length_correct.
@@ -536,11 +536,13 @@ induction p.
     apply subsumption with (last_step (findAssumption ass0 n :: conclusions ass0 p)).
     * unfold findAssumption.
       unfold last_step.
-      admit.
+      apply in_assumptions.
+      apply checkall_implies_ltb with p.
+      assumption.
     * unfold subset.
       intros.
       assumption.
-  - 
+  -
     apply resolution.
    
 
