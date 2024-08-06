@@ -1,0 +1,111 @@
+(* ures_test.ml *)
+
+(* Import the module containing the definitions. *)
+open Ures
+
+(* Define some helper functions for testing *)
+let string_of_bool = function
+  | True -> "True"
+  | False -> "False"
+
+let string_of_nat n =
+  let rec aux n acc = match n with
+    | O -> acc
+    | S n' -> aux n' (acc + 1)
+  in string_of_int (aux n 0)
+
+let rec string_of_list string_of_elem = function
+  | Nil -> "[]"
+  | Cons (x, xs) -> Printf.sprintf "%s :: %s" (string_of_elem x) (string_of_list string_of_elem xs)
+
+let string_of_ascii (Ascii (b0, b1, b2, b3, b4, b5, b6, b7)) =
+  let string_of_bit = function
+    | True -> "1"
+    | False -> "0"
+  in Printf.sprintf "%s%s%s%s%s%s%s%s"
+       (string_of_bit b0) (string_of_bit b1) (string_of_bit b2) (string_of_bit b3)
+       (string_of_bit b4) (string_of_bit b5) (string_of_bit b6) (string_of_bit b7)
+
+let rec string_of_string = function
+  | EmptyString -> ""
+  | String (c, s) -> Printf.sprintf "%s%s" (string_of_ascii c) (string_of_string s)
+
+let string_of_literal = function
+  | Pos s -> Printf.sprintf "Pos %s" (string_of_string s)
+  | Neg s -> Printf.sprintf "Neg %s" (string_of_string s)
+
+let string_of_clause = string_of_list string_of_literal
+
+(* Convert a character to Coq ascii *)
+let char_to_ascii c =
+  let code = int_of_char c in
+  let b0 = if code land 1 <> 0 then True else False in
+  let b1 = if code land 2 <> 0 then True else False in
+  let b2 = if code land 4 <> 0 then True else False in
+  let b3 = if code land 8 <> 0 then True else False in
+  let b4 = if code land 16 <> 0 then True else False in
+  let b5 = if code land 32 <> 0 then True else False in
+  let b6 = if code land 64 <> 0 then True else False in
+  let b7 = if code land 128 <> 0 then True else False in
+  Ascii (b0, b1, b2, b3, b4, b5, b6, b7)
+
+(* Convert a string to Coq string *)
+let rec string_to_coq_string s =
+  if String.length s = 0 then EmptyString
+  else String (char_to_ascii s.[0], string_to_coq_string (String.sub s 1 (String.length s - 1)))
+
+(* Function to get user input *)
+let get_user_input prompt =
+  Printf.printf "%s" prompt;
+  read_line ()
+
+(* Function to create a literal from user input *)
+let rec create_literal string =
+  Printf.printf "Enter 'p' for Positive or 'n' for Negative for the string \"%s\": " string;
+  match read_line () with
+  | "p" -> Pos (string_to_coq_string string)
+  | "n" -> Neg (string_to_coq_string string)
+  | _ -> Printf.printf "Invalid input. Please enter 'p' for Positive or 'n' for Negative.\n"; create_literal string
+
+(* Test functions *)
+let test_isCorrect () =
+  (* Create literals using the updated function *)
+  let a1 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
+  let a2 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
+  let ass = Cons (a1, Cons (a2, Nil)) in
+  (* Define a valid proof *)
+  let p = Cons (Ass O, Cons (Ass (S O), Cons (Res (O, S O, Nil), Nil))) in
+
+  (* Call isCorrect *)
+  let result = Ures.isCorrect ass p in
+
+  (* Convert Ures.bool to bool and print the result *)
+  let result_bool = match result with
+    | Ures.True -> true
+    | Ures.False -> false
+  in
+  Printf.printf "isCorrect result: %b\n" result_bool
+
+(* Incorrect test case *)
+let test_isCorrect_fail () =
+  (* Create literals using the updated function *)
+  let a1 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
+  let a2 = Cons (create_literal (get_user_input "Enter the string: "), Nil) in
+  let ass = Cons (a1, Cons (a2, Nil)) in
+  (* Define an invalid proof: resolution result is a1, which is incorrect *)
+  let p = Cons (Ass O, Cons (Ass (S O), Cons (Res (O, S O, a1), Nil))) in
+
+  (* Call isCorrect *)
+  let result = Ures.isCorrect ass p in
+
+  (* Convert Ures.bool to bool and print the result *)
+  let result_bool = match result with
+    | Ures.True -> true
+    | Ures.False -> false
+  in
+  Printf.printf "isCorrect result (should be false): %b\n" result_bool
+
+(* Run the test *)
+let () =
+  test_isCorrect ();
+  (*test_isCorrect_fail ()*)
