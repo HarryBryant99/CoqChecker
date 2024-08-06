@@ -119,7 +119,7 @@ let rec create_literal () =
 
 (* Function to create a clause from user input *)
 let create_clause () =
-  let input = get_user_input "Enter literals or '[]' for an empty clause: " in
+  let input = get_user_input "Enter a literal or '[]' for an empty clause: " in
   if input = "[]" then
     Nil
   else
