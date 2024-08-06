@@ -1,0 +1,44 @@
+bryanth@fan-pbws1000751:~/OCamlCode$ ./ures_pp
+Enter a literal or '[]' for an empty clause: a
+Enter the string for the literal: a
+Enter 'p' for Positive or 'n' for Negative for the string "a": p
+Do you want to add another literal to the clause? (y/n): y
+Enter the string for the literal: b
+Enter 'p' for Positive or 'n' for Negative for the string "b": p
+Do you want to add another literal to the clause? (y/n): n
+Do you want to add another clause? (y/n): y
+Enter a literal or '[]' for an empty clause: a
+Enter the string for the literal: a
+Enter 'p' for Positive or 'n' for Negative for the string "a": n
+Do you want to add another literal to the clause? (y/n): n
+Do you want to add another clause? (y/n): y
+Enter a literal or '[]' for an empty clause: b
+Enter the string for the literal: b
+Enter 'p' for Positive or 'n' for Negative for the string "b": n
+Do you want to add another literal to the clause? (y/n): n
+Do you want to add another clause? (y/n): n
+Enter 'a' for Assumption or 'r' for Resolution: a
+Enter the assumption number (e.g., 0, 1, ...): 0
+Do you want to add another proof step? (y/n): y
+Enter 'a' for Assumption or 'r' for Resolution: a
+Enter the assumption number (e.g., 0, 1, ...): 1
+Do you want to add another proof step? (y/n): y
+Enter 'a' for Assumption or 'r' for Resolution: r
+Enter the indices for the resolutions (e.g., 0 1): 0 1
+Create a clause for the resolution step:
+Enter a literal or '[]' for an empty clause: b
+Enter the string for the literal: b
+Enter 'p' for Positive or 'n' for Negative for the string "b": p
+Do you want to add another literal to the clause? (y/n): n
+Do you want to add another proof step? (y/n): y
+Enter 'a' for Assumption or 'r' for Resolution: a
+Enter the assumption number (e.g., 0, 1, ...): 2
+Do you want to add another proof step? (y/n): y
+Enter 'a' for Assumption or 'r' for Resolution: r
+Enter the indices for the resolutions (e.g., 0 1): 2 3
+Create a clause for the resolution step:
+Enter a literal or '[]' for an empty clause: []
+Do you want to add another proof step? (y/n): n
+Assumptions: [[[Pos "a"] :: [Pos "b"] :: []]] :: [[[Neg "a"] :: []]] :: [[[Neg "b"] :: []]] :: []
+Proof: [Ass 0] :: [Ass 1] :: [Res (0, 1, [[Pos "b"] :: []])] :: [Ass 2] :: [Res (2, 3, [[]])] :: []
+isCorrect result: true
